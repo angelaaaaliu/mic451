@@ -48,7 +48,12 @@ function setup() {
   octomon.spriteSheet = loadImage('imgs/octomon-hit.png');
   // let octomonHitAni = loadAni('imgs/octomon-hit.png', 5);
   // octomon.addAni('hit', 'imgs/octomon-hit.png', 5);
+  octomonHitAni = loadAnimation('imgs/octomon-sprite-sheet.png', { frameSize: [6048.3994, 5200.7403], frames: 2})
+  octomon.addAni('hit', octomonHitAni);
+  octomon.ani.looping = true;
+  octomon.ani.frameDelay = 7;
   octomon.ani = 'front';
+
 
   octomonHitBox = createSprite(width - width / 4, height / 2, width / 10, height / 10);
   octomonHitBox.visible = false;
@@ -234,7 +239,8 @@ function octomonLaserHit() {
   // octomon.visible = false;
   octomonHealthBar.width = octomonHealthBar.width - origHealthBarWidth / 100;
   octomonHealthBar.x = octomonHealthBar.x - origHealthBarWidth / 200;
-  // octomon.ani = 'hit';
+  // octomon.ani = ['hit', 'front'];
+  octomon.ani.play(0);
   console.log(octomonHealthBar.width);
 }
 
