@@ -9,6 +9,8 @@ let octomonHealthBar, playerHealthBar, octomonHealthBarOutline;
 let origHealthBarWidth;
 let slimes;
 let t = 0;
+let slimesAni;
+let lost = false;
 
 function preload() {
   bgImg = loadImage('imgs/bg.png');
@@ -63,6 +65,11 @@ function setup() {
   lasers = new Group();
 
   slimes = new Group();
+  slimesAni = loadAnimation('imgs/slime-sprite-sheet.png', { frameSize: [301, 300], frames: 6});
+  // slimes.addAni('thrown,', 'imgs/slime-sprite-sheet.png', 6);
+  slimes.addAni('thrown', slimesAni);
+  slimes.ani.frameDelay = 7;
+
 
   player.overlaps(octomon);
   player.overlaps(lasers);
@@ -91,7 +98,7 @@ function draw() {
   image(bgImg, 0, 0, width, height, 0, 0, bgImg.width, bgImg.height, CONTAIN);
   fill(255, 246, 192);
   t++;
-  if (t % 150 == 0) {
+  if (t % 70 == 0) {
     throwSlime();
   }
   // rect(width / 4, height / 2, width / 15, width / 20);
@@ -193,6 +200,11 @@ function draw() {
     win();
   }
 
+  if (lost) {
+    let lostText = 'OCTOMON REIGNS';
+    text(lostText, width / 2, 50, width / 3, height / 10);
+  }
+
 }
 
 function shootLaser() {
@@ -237,25 +249,36 @@ function octomonScytheHit() {
 
 function throwSlime() {
     let slime = new slimes.Sprite(octomon.x, octomon.y);
-    slime.scale = 0.00006382979 * width;
-    slime.spriteSheet = loadImage('imgs/slime-sprite-sheet.png', { frameSize: [900, 600], frames: 6});
-    slime.addImg('thrown', [
-      [0, 0],
-      [300, 0],
-      [600, 0],
-      [0, 300],
-      [300, 300],
-      [600, 300]
-    ]);
-    slime.ani.frameDelay = 16;
+    slime.scale = (0.0006382979 * windowWidth) / 4;
+    // slime.ani = slimesAni;
+    // slime.addImg('thrown', [
+    //   [0, 0],
+    //   [300, 0],
+    //   [600, 0],
+    //   [0, 300],
+    //   [300, 300],
+    //   [600, 300]
+    // ]);
     slime.ani.looping = false;
     slime.diameter = width / 20;
+    slime.direction = random(0, 360);
+    slime.speed = random(2, 10);
     console.log(t);
     slime.life = 1500;
+    slime.collide(player, lose);
+    // slime.collide(laser, slime.visible = false);
 }
 
 function win() {
   octomon.collider = 'kinematic';
   octomon.rotationSpeed = 1;
   octomon.vel.x = 4;
+  let winText = 'OCTOMON\'S SLIMEY REIGN IS OVER'
+  text(winText, width / 2, 50, width / 3, height / 10);
+}
+
+function lose() {
+  player.visible = false;
+  slimes.visible = false;
+  lost = true;
 }
