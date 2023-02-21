@@ -99,13 +99,22 @@ function setup() {
 
 function draw() {
   background(1, 46, 55);
-  allSprites.debug = mouse.pressing();
+  // allSprites.debug = mouse.pressing();
   image(bgImg, 0, 0, width, height, 0, 0, bgImg.width, bgImg.height, CONTAIN);
   fill(255, 246, 192);
   t++;
   if (t % 70 == 0) {
     throwSlime();
   }
+
+  let instructionsWeapons = 'Press 1 or 2 to equip a weapon. Press the same number to unequip.';
+  let instructionsAttack = 'Press K to attack.';
+  let instructionsMove = "Use WASD to move.";
+
+  text(instructionsWeapons, 16, 16);
+  text(instructionsAttack, 16, 36);
+  text(instructionsMove, 16, 56);
+
   // rect(width / 4, height / 2, width / 15, width / 20);
   // rect(width - width / 6, 100, width / 6, height / 80);
   // rect(width - width / 4, height - height / 2.5, width / 10, height / 5);
@@ -286,5 +295,8 @@ function win() {
 function lose() {
   player.visible = false;
   slimes.visible = false;
+  lasers.visible = false;
+  octomonHealthBar.visible = false;
+  octomonHealthBarOutline.visible = false;
   lost = true;
 }
