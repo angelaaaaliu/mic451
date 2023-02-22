@@ -24,7 +24,7 @@ function setup() {
 
   player.width = width;
   player.height = height;
-  player.scale = 0.00006316 * width;
+  player.scale = 0.00006316 * windowWidth;
   player.addImg('front', 'imgs/player-front.png');
   player.addImg('right', 'imgs/player-right.png');
   player.addImg('left', 'imgs/player-left.png');
